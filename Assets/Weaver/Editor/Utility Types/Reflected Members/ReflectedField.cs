@@ -4,9 +4,9 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-public class ReflectedField<T> 
+public class ReflectedField<T>
 {
-    private T m_Value; 
+    private T m_Value;
     private object m_TargetInstance;
     private FieldInfo m_FieldInfo;
 
@@ -15,7 +15,7 @@ public class ReflectedField<T>
         get { return m_Value; }
         set
         {
-            if(!value.Equals(m_Value))
+            if (!value.Equals(m_Value))
             {
                 m_Value = (T)m_FieldInfo.GetValue(m_TargetInstance);
             }
@@ -31,26 +31,26 @@ public class ReflectedField<T>
     {
         m_TargetInstance = null;
 
-        for (int i = 0; i < serializedObject.targetObjects.Length; i++)
+        for (var i = 0; i < serializedObject.targetObjects.Length; i++)
         {
             m_TargetInstance = serializedObject.targetObjects[i];
-            string[] members = propertyPath.Split('.');
+            var members = propertyPath.Split('.');
 
-            for (int memberIndex = 0; memberIndex < members.Length; memberIndex++)
+            for (var memberIndex = 0; memberIndex < members.Length; memberIndex++)
             {
-                string memberName = members[memberIndex];
-                Type instanceType = m_TargetInstance.GetType();
+                var memberName = members[memberIndex];
+                var instanceType = m_TargetInstance.GetType();
 
-                if(string.CompareOrdinal("Array", memberName) == 0)
+                if (string.CompareOrdinal("Array", memberName) == 0)
                 {
                     // Skip to the next index
-                    memberIndex++; 
-                    // Array.data[0] // Example of what we are trying to parse 
-                    string arrayPath = members[memberIndex];
+                    memberIndex++;
+                    // Array.data[0] // Example of what we are trying to parse
+                    var arrayPath = members[memberIndex];
                     // grab our index
-                    int arrayIndex = ReflectedMembers.GetArrayIndexFromPropertyPath(arrayPath);
+                    var arrayIndex = ReflectedMembers.GetArrayIndexFromPropertyPath(arrayPath);
                     // Cast our instance as a IList
-                    IList asList = (IList)m_TargetInstance;
+                    var asList = (IList)m_TargetInstance;
                     // Grab the element
                     m_TargetInstance = asList[arrayIndex];
                 }
@@ -60,7 +60,7 @@ public class ReflectedField<T>
                 }
                 else
                 {
-                    FieldInfo fieldInfo = instanceType.GetField(memberName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
+                    var fieldInfo = instanceType.GetField(memberName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
                     m_TargetInstance = fieldInfo.GetValue(m_TargetInstance);
                 }
             }
@@ -68,13 +68,11 @@ public class ReflectedField<T>
             if (m_FieldInfo.IsStatic)
             {
                 m_TargetInstance = null;
-                // Only invoke static methods once. 
+                // Only invoke static methods once.
                 break;
             }
         }
 
         m_Value = (T)m_FieldInfo.GetValue(m_TargetInstance);
     }
-
-
 }

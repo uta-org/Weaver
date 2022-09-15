@@ -14,7 +14,7 @@ namespace Weaver
         private static T m_Instance;
 
         /// <summary>
-        /// Returns the save path of this object on disk. 
+        /// Returns the save path of this object on disk.
         /// </summary>
         protected static string savePath
         {
@@ -26,17 +26,17 @@ namespace Weaver
 
         /// <summary>
         /// Loads the current instance of Weaver from disk
-        /// or creates a new one. 
+        /// or creates a new one.
         /// </summary>
         protected static T GetInstance()
         {
             if (m_Instance == null)
             {
                 // Try to find all instances
-                T[] instances = Resources.FindObjectsOfTypeAll<T>();
+                var instances = Resources.FindObjectsOfTypeAll<T>();
                 // Loop over them all
 
-                for (int i = instances.Length - 1; i >= 0; i--)
+                for (var i = instances.Length - 1; i >= 0; i--)
                 {
                     if (i == 0)
                     {
@@ -56,12 +56,12 @@ namespace Weaver
                     if (File.Exists(savePath))
                     {
                         // Load the file from disk
-                        Object[] loadedObjects = InternalEditorUtility.LoadSerializedFileAndForget(savePath);
+                        var loadedObjects = InternalEditorUtility.LoadSerializedFileAndForget(savePath);
                         // Validate that we loaded something
                         if (loadedObjects.Length > 0)
                         {
                             // Check the first objects type
-                            T instance = loadedObjects[0] as T;
+                            var instance = loadedObjects[0] as T;
                             if (instance != null)
                             {
                                 // We are good
@@ -83,17 +83,17 @@ namespace Weaver
         }
 
         /// <summary>
-        /// Takes this instance and writes it to disk. 
+        /// Takes this instance and writes it to disk.
         /// </summary>
         protected void Save()
         {
             // Create a copy so we don't destroy ourself.
-            Object instance = Instantiate(this); 
+            Object instance = Instantiate(this);
             // Populate our list of things we are saving
-            Object[] objectsToSave = new Object[] { instance };
+            var objectsToSave = new Object[] { instance };
             // Write to disk
             InternalEditorUtility.SaveToSerializedFileAndForget(objectsToSave, savePath, true);
-            // Destroy our copy 
+            // Destroy our copy
             DestroyImmediate(instance);
         }
     }

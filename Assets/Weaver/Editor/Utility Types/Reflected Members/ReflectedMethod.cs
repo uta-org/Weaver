@@ -12,10 +12,10 @@ public struct ReturnValue
     {
         m_HasMixedValues = false;
         m_Values = new object[values.Length];
-        for (int x = 0; x < values.Length; x++)
+        for (var x = 0; x < values.Length; x++)
         {
             m_Values[x] = values[x];
-            for (int y = 0; y < values.Length; y++)
+            for (var y = 0; y < values.Length; y++)
             {
                 if (x != y)
                 {
@@ -31,19 +31,19 @@ public struct ReturnValue
         {
             return false;
         }
-        for (int i = 0; i < m_Values.Length; i++)
+        for (var i = 0; i < m_Values.Length; i++)
         {
-            if(value == null && m_Values[i] != null)
-            {
-                return false; 
-            }
-
-            if(m_Values[i] == null && value != null)
+            if (value == null && m_Values[i] != null)
             {
                 return false;
             }
 
-            if(!Equals(m_Values[i], value))
+            if (m_Values[i] == null && value != null)
+            {
+                return false;
+            }
+
+            if (!Equals(m_Values[i], value))
             {
                 return false;
             }
@@ -69,34 +69,34 @@ public class ReflectedMethod
 
     public ReturnValue Invoke(params object[] arguments)
     {
-        Type[] parameters = new Type[arguments.Length];
-        for (int i = 0; i < parameters.Length; i++)
+        var parameters = new Type[arguments.Length];
+        for (var i = 0; i < parameters.Length; i++)
         {
             parameters[i] = arguments[i].GetType();
         }
-        object[] results = new object[m_SerializedObject.targetObjects.Length];
+        var results = new object[m_SerializedObject.targetObjects.Length];
         object instance = null;
 
-        for (int i = 0; i < m_SerializedObject.targetObjects.Length; i++)
+        for (var i = 0; i < m_SerializedObject.targetObjects.Length; i++)
         {
             instance = m_SerializedObject.targetObjects[i];
-            string[] members = m_MethodPath.Split('.');
+            var members = m_MethodPath.Split('.');
 
-            for (int memberIndex = 0; memberIndex < members.Length; memberIndex++)
+            for (var memberIndex = 0; memberIndex < members.Length; memberIndex++)
             {
-                string memberName = members[memberIndex];
-                Type instanceType = instance.GetType();
+                var memberName = members[memberIndex];
+                var instanceType = instance.GetType();
 
                 if (string.CompareOrdinal("Array", memberName) == 0)
                 {
                     // Skip to the next index
                     memberIndex++;
-                    // Array.data[0] // Example of what we are trying to parse 
-                    string arrayPath = members[memberIndex];
+                    // Array.data[0] // Example of what we are trying to parse
+                    var arrayPath = members[memberIndex];
                     // grab our index
-                    int arrayIndex = ReflectedMembers.GetArrayIndexFromPropertyPath(arrayPath);
+                    var arrayIndex = ReflectedMembers.GetArrayIndexFromPropertyPath(arrayPath);
                     // Cast our instance as a IList
-                    IList asList = (IList)instance;
+                    var asList = (IList)instance;
                     // Grab the element
                     instance = asList[arrayIndex];
                 }
@@ -106,7 +106,7 @@ public class ReflectedMethod
                 }
                 else
                 {
-                    FieldInfo fieldInfo = instanceType.GetField(memberName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
+                    var fieldInfo = instanceType.GetField(memberName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
                     instance = fieldInfo.GetValue(instance);
                 }
             }

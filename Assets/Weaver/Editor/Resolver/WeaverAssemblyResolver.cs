@@ -6,13 +6,14 @@ using System.Reflection;
 namespace Weaver
 {
     /// <summary>
-    /// Used to resolve any references to assemblies that are current in the unity 
+    /// Used to resolve any references to assemblies that are current in the unity
     /// project.
     /// </summary>
     public class WeaverAssemblyResolver : BaseAssemblyResolver
     {
         // map of assembly locations
         private readonly IDictionary<string, string> _appDomainAssemblyLocations;
+
         // cache of loaded AssemblyDefinitions
         private readonly IDictionary<string, AssemblyDefinition> _cache;
 
@@ -22,13 +23,13 @@ namespace Weaver
             _appDomainAssemblyLocations = new Dictionary<string, string>();
             _cache = new Dictionary<string, AssemblyDefinition>();
             // Get the current app domain
-            AppDomain domain = AppDomain.CurrentDomain;
+            var domain = AppDomain.CurrentDomain;
             // Find all assemblies
-            Assembly[] assemblies = domain.GetAssemblies();
+            var assemblies = domain.GetAssemblies();
             // for each currently loaded assembly,
-            foreach (Assembly assembly in assemblies)
+            foreach (var assembly in assemblies)
             {
-                // Dynamic assemblies don't live on disk. 
+                // Dynamic assemblies don't live on disk.
                 if (assembly.ReflectionOnly || assembly.IsDynamic || string.IsNullOrEmpty(assembly.Location))
                     continue;
 
@@ -41,7 +42,7 @@ namespace Weaver
 
         public override AssemblyDefinition Resolve(AssemblyNameReference name)
         {
-            AssemblyDefinition assemblyDef = FindAssemblyDefinition(name.FullName, null);
+            var assemblyDef = FindAssemblyDefinition(name.FullName, null);
 
             if (assemblyDef == null)
             {
@@ -54,7 +55,7 @@ namespace Weaver
 
         public override AssemblyDefinition Resolve(AssemblyNameReference name, ReaderParameters parameters)
         {
-            AssemblyDefinition assemblyDef = FindAssemblyDefinition(name.FullName, parameters);
+            var assemblyDef = FindAssemblyDefinition(name.FullName, parameters);
 
             if (assemblyDef == null)
             {

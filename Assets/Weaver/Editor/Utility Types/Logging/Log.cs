@@ -23,6 +23,7 @@ namespace Weaver
         }
 
         private ILogable m_Context;
+
         [SerializeField]
         [UsedImplicitly]
         private List<Entry> m_Entries = new List<Entry>();
@@ -37,6 +38,7 @@ namespace Weaver
             get { return m_Context; }
             set { m_Context = value; }
         }
+
         /// <summary>
         /// Creates a new instance of a log.
         /// </summary>
@@ -53,7 +55,7 @@ namespace Weaver
 
         /// <summary>
         /// Logs a message to the weaver settings log with an
-        /// option to write to the Unity console. 
+        /// option to write to the Unity console.
         /// </summary>
         /// <param name="message">The message you want to write</param>
         /// <param name="logToConsole">If true will also log to the Unity console</param>
@@ -68,7 +70,7 @@ namespace Weaver
 
         /// <summary>
         /// Logs a warning to the weaver settings log with an
-        /// option to write to the Unity console. 
+        /// option to write to the Unity console.
         /// </summary>
         /// <param name="warning">The message you want to write</param>
         /// <param name="logToConsole">If true will also log to the Unity console</param>
@@ -83,7 +85,7 @@ namespace Weaver
 
         /// <summary>
         /// Logs a error to the weaver settings log with an
-        /// option to write to the Unity console. 
+        /// option to write to the Unity console.
         /// </summary>
         /// <param name="message">The message you want to write</param>
         /// <param name="logToConsole">If true will also log to the Unity console</param>
@@ -107,6 +109,7 @@ namespace Weaver
             {
                 case MessageType.Warning:
                     return string.Format("<color=yellow>[{0}:{1}]: {2}</color>", fileName, lineNumber, message);
+
                 case MessageType.Error:
                     return string.Format("<color=red>[{0}:{1}]: {2}</color>", fileName, lineNumber, message);
             }
@@ -116,15 +119,15 @@ namespace Weaver
         private void AddEntry(string context, string message, MessageType logType, int stackFrameDiscard)
         {
             // Get our stack frame
-            StackFrame frame = new StackFrame(stackFrameDiscard, true);
+            var frame = new StackFrame(stackFrameDiscard, true);
             // Create our entry
             if (string.IsNullOrEmpty(context))
             {
                 context = System.IO.Path.GetFileNameWithoutExtension(frame.GetFileName());
             }
-            int lineNumber = frame.GetFileLineNumber();
+            var lineNumber = frame.GetFileLineNumber();
             message = FormatLabel(message, context, frame.GetFileLineNumber(), logType);
-            Entry entry = new Entry()
+            var entry = new Entry()
             {
                 fileName = frame.GetFileName(),
                 lineNumber = lineNumber,

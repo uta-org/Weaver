@@ -27,17 +27,17 @@ namespace Weaver
     {
         public static MemberLocation GetLocation(this TypeDefinition typeDefinition)
         {
-            for (int methodIndex = 0; methodIndex < typeDefinition.Methods.Count; methodIndex++)
+            for (var methodIndex = 0; methodIndex < typeDefinition.Methods.Count; methodIndex++)
             {
                 if (typeDefinition.Methods[methodIndex].HasBody)
                 {
-                    MethodBody body = typeDefinition.Methods[methodIndex].Body;
+                    var body = typeDefinition.Methods[methodIndex].Body;
 
-                    for (int instructionIndex = 0; instructionIndex < body.Instructions.Count; instructionIndex++)
+                    for (var instructionIndex = 0; instructionIndex < body.Instructions.Count; instructionIndex++)
                     {
-                        Instruction instruction = body.Instructions[instructionIndex];
+                        var instruction = body.Instructions[instructionIndex];
 
-                        SequencePoint sequencePoint = body.Method.DebugInformation.GetSequencePoint(instruction); 
+                        var sequencePoint = body.Method.DebugInformation.GetSequencePoint(instruction);
 
                         if (sequencePoint != null)
                         {
@@ -52,12 +52,11 @@ namespace Weaver
             return null;
         }
 
-
         public static MethodLocation GetLocation(this MethodDefinition method)
         {
             foreach (var instruction in method.Body.Instructions)
             {
-                SequencePoint sequencePoint = method.DebugInformation.GetSequencePoint(instruction);
+                var sequencePoint = method.DebugInformation.GetSequencePoint(instruction);
 
                 if (sequencePoint != null)
                 {

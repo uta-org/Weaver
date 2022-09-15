@@ -9,11 +9,12 @@ namespace Weaver
     {
         [SerializeField]
         public string value;
+
         [SerializeField]
         private bool m_IsActive;
 
         /// <summary>
-        /// Returns back true if the symbols are defined. 
+        /// Returns back true if the symbols are defined.
         /// </summary>
         public bool isActive
         {
@@ -28,22 +29,21 @@ namespace Weaver
                 return;
             }
 
-            char[] spitKey = new char[] { ';' };
-            BuildTargetGroup buildTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+            var spitKey = new char[] { ';' };
+            var buildTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
 
-            string[] requiredDefines = value.Split(spitKey, StringSplitOptions.RemoveEmptyEntries);
-            string[] activeDefines = EditorUserBuildSettings.activeScriptCompilationDefines;
+            var requiredDefines = value.Split(spitKey, StringSplitOptions.RemoveEmptyEntries);
+            var activeDefines = EditorUserBuildSettings.activeScriptCompilationDefines;
 
-            foreach (string user in requiredDefines)
+            foreach (var user in requiredDefines)
             {
-                bool wasFound = false;
-                bool isInversed = user[0] == '!';
-                int indexA = isInversed ? 1 : 0;
+                var wasFound = false;
+                var isInversed = user[0] == '!';
+                var indexA = isInversed ? 1 : 0;
 
-                foreach (string current in activeDefines)
+                foreach (var current in activeDefines)
                 {
-
-                    // Make sure we are the same length 
+                    // Make sure we are the same length
                     if (user.Length - indexA != current.Length)
                     {
                         continue;

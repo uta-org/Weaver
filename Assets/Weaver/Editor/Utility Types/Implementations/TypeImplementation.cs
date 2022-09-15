@@ -29,22 +29,22 @@ namespace Weaver
 
         public MethodImplementation GetMethod(string methodName)
         {
-            MethodDefinition methodDefinition = definition.GetMethod(methodName);
-            MethodImplementation methodImplementation = new MethodImplementation(m_Module,methodDefinition);
+            var methodDefinition = definition.GetMethod(methodName);
+            var methodImplementation = new MethodImplementation(m_Module, methodDefinition);
             return methodImplementation;
         }
 
         public MethodImplementation GetMethod(string methodName, params Type[] parameterTypes)
         {
-            MethodDefinition methodDefinition = definition.GetMethod(methodName, parameterTypes);
-            MethodImplementation methodImplementation = new MethodImplementation(m_Module, methodDefinition);
+            var methodDefinition = definition.GetMethod(methodName, parameterTypes);
+            var methodImplementation = new MethodImplementation(m_Module, methodDefinition);
             return methodImplementation;
         }
 
         public PropertyImplementation GetProperty(string methodName)
         {
-            PropertyDefinition propertyDefinition = definition.GetProperty(methodName);
-            PropertyImplementation methodImplementation = new PropertyImplementation(m_Module, propertyDefinition);
+            var propertyDefinition = definition.GetProperty(methodName);
+            var methodImplementation = new PropertyImplementation(m_Module, propertyDefinition);
             return methodImplementation;
         }
     }

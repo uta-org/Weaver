@@ -10,13 +10,13 @@ namespace Weaver.Extensions
         {
             if (!instance.HasCustomAttributes) return false;
 
-            Collection<CustomAttribute> attributes = instance.CustomAttributes;
+            var attributes = instance.CustomAttributes;
 
-            for(int i = 0;  i < attributes.Count; i++)
+            for (var i = 0; i < attributes.Count; i++)
             {
-                if(attributes[i].AttributeType.FullName.Equals(typeof(T).FullName, StringComparison.Ordinal))
+                if (attributes[i].AttributeType.FullName.Equals(typeof(T).FullName, StringComparison.Ordinal))
                 {
-                    return true; 
+                    return true;
                 }
             }
             return false;
@@ -26,9 +26,9 @@ namespace Weaver.Extensions
         {
             if (!instance.HasCustomAttributes) return null;
 
-            Collection<CustomAttribute> attributes = instance.CustomAttributes;
+            var attributes = instance.CustomAttributes;
 
-            for (int i = 0; i < attributes.Count; i++)
+            for (var i = 0; i < attributes.Count; i++)
             {
                 if (attributes[i].AttributeType.FullName.Equals(typeof(T).FullName, StringComparison.Ordinal))
                 {

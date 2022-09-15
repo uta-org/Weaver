@@ -16,13 +16,13 @@ public static class ReflectedMembers
 
     public static ReflectedMethod FindMethodRelative(this SerializedProperty serializedProperty, string methodName)
     {
-        string methodPath = serializedProperty.propertyPath + "." + methodName;
+        var methodPath = serializedProperty.propertyPath + "." + methodName;
         return new ReflectedMethod(serializedProperty.serializedObject, methodPath);
     }
 
     public static ReflectedMethod FindMethodRelative(this SerializedProperty serializedProperty, string methodName, params Type[] parameters)
     {
-        string methodPath = serializedProperty.propertyPath + "." + methodName;
+        var methodPath = serializedProperty.propertyPath + "." + methodName;
         return new ReflectedMethod(serializedProperty.serializedObject, methodPath);
     }
 
@@ -33,14 +33,14 @@ public static class ReflectedMembers
 
     public static ReflectedField<T> FindField<T>(this SerializedProperty serializedProperty, string methodName)
     {
-        string methodPath = serializedProperty.propertyPath + "." + methodName;
+        var methodPath = serializedProperty.propertyPath + "." + methodName;
         return new ReflectedField<T>(serializedProperty.serializedObject, methodPath);
     }
 
     public static int GetArrayIndexFromPropertyPath(string propertyPath)
     {
-        int pathLength = propertyPath.Length - 2;
-        int i = pathLength;
+        var pathLength = propertyPath.Length - 2;
+        var i = pathLength;
 
         while (i >= 0)
         {
@@ -50,9 +50,9 @@ public static class ReflectedMembers
                 break;
             }
         }
-        int length = pathLength - i;
-        int startIndex = propertyPath.Length - (propertyPath.Length - i) + 1;
-        string digits = propertyPath.Substring(startIndex, length);
+        var length = pathLength - i;
+        var startIndex = propertyPath.Length - (propertyPath.Length - i) + 1;
+        var digits = propertyPath.Substring(startIndex, length);
         return int.Parse(digits);
     }
 }

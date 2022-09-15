@@ -30,8 +30,8 @@ namespace Weaver
 
         public override void VisitProperty(PropertyDefinition propertyDefinition)
         {
-            // Attempt to get our attribute 
-            CustomAttribute customAttribute = propertyDefinition.GetCustomAttribute<OnChangedAttribute>();
+            // Attempt to get our attribute
+            var customAttribute = propertyDefinition.GetCustomAttribute<OnChangedAttribute>();
             // Check if it's null
             if (customAttribute == null)
             {
@@ -53,9 +53,9 @@ namespace Weaver
                 return;
             }
             // Get the name of the method we are going to connect
-            string callbackMethod = (string)customAttribute.ConstructorArguments[0].Value;
+            var callbackMethod = (string)customAttribute.ConstructorArguments[0].Value;
             // Get the argument type we are looking for
-            TypeReference propertyType = propertyDefinition.PropertyType;
+            var propertyType = propertyDefinition.PropertyType;
             // Look for the method
             MethodReference callbackWithArg = propertyDefinition.DeclaringType.GetMethod(callbackMethod, propertyType);
             // Check if we found one
@@ -65,27 +65,27 @@ namespace Weaver
                 return;
             }
 
-            // Inject Property Functions 
+            // Inject Property Functions
             try
             {
-                MethodDefinition setMethodDefinition = setMethod.Resolve();
-                MethodBody methodBody = setMethodDefinition.Body;
-                ILProcessor ilProcessor = methodBody.GetILProcessor();
-                Instruction _start = methodBody.Instructions[0];
+                var setMethodDefinition = setMethod.Resolve();
+                var methodBody = setMethodDefinition.Body;
+                var ilProcessor = methodBody.GetILProcessor();
+                var _start = methodBody.Instructions[0];
                 // IL Time
-                Instruction _01 = ilProcessor.Create(OpCodes.Nop);
-                Instruction _02 = ilProcessor.Create(OpCodes.Ldarg_0);
-                Instruction _03 = ilProcessor.Create(OpCodes.Call, getMethod);
-                Instruction _04 = ilProcessor.Create(OpCodes.Ldarg_1);
-                Instruction _05 = ilProcessor.Create(OpCodes.Beq, _start);
+                var _01 = ilProcessor.Create(OpCodes.Nop);
+                var _02 = ilProcessor.Create(OpCodes.Ldarg_0);
+                var _03 = ilProcessor.Create(OpCodes.Call, getMethod);
+                var _04 = ilProcessor.Create(OpCodes.Ldarg_1);
+                var _05 = ilProcessor.Create(OpCodes.Beq, _start);
 
                 // If True
-                Instruction _06 = ilProcessor.Create(OpCodes.Nop);
-                Instruction _07 = ilProcessor.Create(OpCodes.Ldarg_0);
-                Instruction _08 = ilProcessor.Create(OpCodes.Ldarg_1);
-                Instruction _10 = ilProcessor.Create(OpCodes.Call, callbackWithArg);
-                Instruction _11 = ilProcessor.Create(OpCodes.Nop);
-                // Grab the first one 
+                var _06 = ilProcessor.Create(OpCodes.Nop);
+                var _07 = ilProcessor.Create(OpCodes.Ldarg_0);
+                var _08 = ilProcessor.Create(OpCodes.Ldarg_1);
+                var _10 = ilProcessor.Create(OpCodes.Call, callbackWithArg);
+                var _11 = ilProcessor.Create(OpCodes.Nop);
+                // Grab the first one
 
                 ilProcessor.InsertBefore(_start, _01);
                 ilProcessor.InsertAfter(_01, _02);
@@ -96,7 +96,7 @@ namespace Weaver
                 ilProcessor.InsertAfter(_05, _06);
                 ilProcessor.InsertAfter(_06, _07);
                 ilProcessor.InsertAfter(_07, _08);
-                ilProcessor.InsertAfter(_08,  _10);
+                ilProcessor.InsertAfter(_08, _10);
                 ilProcessor.InsertAfter(_10, _11);
 
                 // Remove out attribute to clean up (since at this point we successfuly wrote).
@@ -108,12 +108,12 @@ namespace Weaver
                 return;
             }
             /*
-            // Check for validation 
+            // Check for validation
             bool isValidated = customAttribute.GetValue<bool>("isValidated");
             // Do it only if true
             if(isValidated)
             {
-                // Add a new field to hold our last state 
+                // Add a new field to hold our last state
                 FieldDefinition validationField = new FieldDefinition("___Validation_" + propertyDefinition.Name, FieldAttributes.Private, propertyDefinition.PropertyType);
                 // Look for the OnValidateFunction
                 MethodDefinition onValidateFunction = propertyDefinition.DeclaringType.GetMethod("OnValidate", 0);

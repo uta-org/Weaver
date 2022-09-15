@@ -29,7 +29,6 @@ namespace Weaver.Editors
                 m_RemoveItemMethod = property.FindMethodRelative("Remove", typeof(int));
                 m_HasInstanceOfTypeMethod = property.FindMethodRelative("HasInstanceOfType", typeof(Type));
 
-
                 m_ReoderableList = new ReorderableList(m_SubObjects.serializedObject, m_SubObjects) { draggable = true };
                 m_ReoderableList.onAddCallback += OnComponentAdded;
                 m_ReoderableList.onRemoveCallback += OnComponentRemoved;
@@ -42,13 +41,13 @@ namespace Weaver.Editors
         {
             rect.height = EditorGUIUtility.singleLineHeight;
             rect.y += 2.0f;
-            SerializedProperty element = m_SubObjects.GetArrayElementAtIndex(index);
-            SerializedObject serializedObject = new SerializedObject(element.objectReferenceValue);
+            var element = m_SubObjects.GetArrayElementAtIndex(index);
+            var serializedObject = new SerializedObject(element.objectReferenceValue);
             rect.width -= 20f;
             GUI.Label(rect, element.objectReferenceValue.name, EditorStyles.textArea);
             rect.x += rect.width;
             rect.width = 20f;
-            SerializedProperty isEnabled = serializedObject.FindProperty("m_IsActive");
+            var isEnabled = serializedObject.FindProperty("m_IsActive");
             isEnabled.boolValue = EditorGUI.Toggle(rect, isEnabled.boolValue);
             serializedObject.ApplyModifiedProperties();
         }
@@ -60,10 +59,10 @@ namespace Weaver.Editors
 
         private void OnComponentRemoved(ReorderableList list)
         {
-            Object removedObject = m_SubObjects.GetArrayElementAtIndex(list.index).objectReferenceValue;
+            var removedObject = m_SubObjects.GetArrayElementAtIndex(list.index).objectReferenceValue;
             if (removedObject != null)
             {
-                string removedElementType = removedObject.GetType().FullName;
+                var removedElementType = removedObject.GetType().FullName;
             }
             m_RemoveItemMethod.Invoke(list.index);
             OnComponentAddedOrRemoved();
@@ -72,17 +71,17 @@ namespace Weaver.Editors
         private void OnComponentAdded(ReorderableList list)
         {
             // Create the generic menu
-            GenericMenu componentMenu = new GenericMenu();
-            // Get all the types that inherit from Weaver Component 
-            IList<Type> componentTypes = AssemblyUtility.GetInheirtingTypesFromUserAssemblies<WeaverComponent>();
+            var componentMenu = new GenericMenu();
+            // Get all the types that inherit from Weaver Component
+            var componentTypes = AssemblyUtility.GetInheirtingTypesFromUserAssemblies<WeaverComponent>();
             // Loop over them all
-            for (int i = 0; i < componentTypes.Count; i++)
+            for (var i = 0; i < componentTypes.Count; i++)
             {
-                Type type = componentTypes[i];
+                var type = componentTypes[i];
                 // Check if we already have that type
                 if (m_HasInstanceOfTypeMethod.Invoke(type).AreEqual(false))
                 {
-                    GUIContent menuLabel = new GUIContent(type.Assembly.GetName().Name + "/" + type.Name);
+                    var menuLabel = new GUIContent(type.Assembly.GetName().Name + "/" + type.Name);
                     componentMenu.AddItem(menuLabel, false, OnTypeAdded, type);
                 }
             }
@@ -93,7 +92,7 @@ namespace Weaver.Editors
             }
 
             // We are just trying to align the menu to the plus box.
-            Rect menuDisplayRect = m_Position;
+            var menuDisplayRect = m_Position;
             menuDisplayRect.height = EditorGUIUtility.singleLineHeight;
             menuDisplayRect.y += m_Position.height - EditorGUIUtility.singleLineHeight;
             menuDisplayRect.x += EditorGUIUtility.currentViewWidth - 100;
@@ -108,7 +107,7 @@ namespace Weaver.Editors
 
         private void OnComponentAddedOrRemoved()
         {
-            SerializedObject serializedObject = m_SubObjects.serializedObject;
+            var serializedObject = m_SubObjects.serializedObject;
             serializedObject.ApplyModifiedProperties();
             serializedObject.Update();
         }

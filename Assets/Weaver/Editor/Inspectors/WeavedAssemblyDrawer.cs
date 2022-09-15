@@ -14,8 +14,8 @@ namespace Weaver.Editors
             EditorGUI.BeginChangeCheck();
             {
                 const float BUTTON_WIDTH = 25;
-                SerializedProperty relativePath = property.FindPropertyRelative("m_RelativePath");
-                SerializedProperty isActive = property.FindPropertyRelative("m_IsActive");
+                var relativePath = property.FindPropertyRelative("m_RelativePath");
+                var isActive = property.FindPropertyRelative("m_IsActive");
                 position.width -= BUTTON_WIDTH;
                 EditorGUI.LabelField(position, relativePath.stringValue, EditorStyles.textArea);
                 position.x += position.width;

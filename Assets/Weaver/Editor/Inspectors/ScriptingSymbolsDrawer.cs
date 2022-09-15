@@ -29,14 +29,14 @@ namespace Weaver
             if (EditorGUI.EndChangeCheck())
             {
                 // Filter out input
-                string value = property.stringValue;
+                var value = property.stringValue;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    char[] result = new char[value.Length];
-                    int length = 0;
-                    for (int i = 0; i < value.Length; i++)
+                    var result = new char[value.Length];
+                    var length = 0;
+                    for (var i = 0; i < value.Length; i++)
                     {
-                        char letter = value[i];
+                        var letter = value[i];
 
                         if ((letter >= 'a' && letter <= 'z') ||
                             (letter >= 'A' && letter <= 'Z'))
@@ -58,6 +58,7 @@ namespace Weaver
                                 result[length] = letter;
                                 length++;
                                 break;
+
                             case ';':
                                 // Don't allow double semi colons.
                                 if (length > 0 && result[length - 1] != ';')
@@ -66,6 +67,7 @@ namespace Weaver
                                     length++;
                                 }
                                 break;
+
                             case ' ':
                                 result[length] = ';';
                                 length++;

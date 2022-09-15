@@ -19,11 +19,11 @@ namespace Weaver.Editors
             {
                 cachedContent = new GUIContent();
 
-                Texture2D altTexutre = new Texture2D(1, 1);
+                var altTexutre = new Texture2D(1, 1);
                 altTexutre.SetPixel(0, 0, new Color32(126, 126, 126, 50));
                 altTexutre.Apply();
 
-                Texture2D selectedTexture = new Texture2D(1, 1);
+                var selectedTexture = new Texture2D(1, 1);
                 selectedTexture.SetPixel(0, 0, new Color32(0, 140, 255, 40));
                 selectedTexture.Apply();
 
@@ -32,8 +32,8 @@ namespace Weaver.Editors
                     onHover = { background = altTexutre },
                     onFocused = { background = selectedTexture }
                 };
-                // Set Color 
-                Color zebraFontColor = zebraStyle.normal.textColor;
+                // Set Color
+                var zebraFontColor = zebraStyle.normal.textColor;
                 zebraStyle.onFocused.textColor = zebraFontColor;
                 zebraStyle.onHover.textColor = zebraFontColor;
 
@@ -53,6 +53,7 @@ namespace Weaver.Editors
 
         // Properties
         private SerializedProperty m_WeavedAssemblies;
+
         private SerializedProperty m_Components;
         private SerializedProperty m_Enabled;
         private SerializedProperty m_IsSymbolsDefined;
@@ -64,10 +65,12 @@ namespace Weaver.Editors
 
         // Layouts
         private Vector2 m_LogScrollPosition;
+
         private int m_SelectedLogIndex;
 
         // Labels
         private GUIContent m_WeavedAssemblyHeaderLabel;
+
         private static Styles m_Styles;
 
         private bool _hasModifiedProperties;
@@ -90,7 +93,7 @@ namespace Weaver.Editors
             m_WeavedAssembliesList.onAddCallback += OnWeavedAssemblyElementAdded;
             m_WeavedAssembliesList.drawHeaderCallback += OnWeavedAssemblyHeader;
             m_WeavedAssembliesList.onRemoveCallback += OnWeavedAssemblyRemoved;
-            // Labels 
+            // Labels
             m_WeavedAssemblyHeaderLabel = new GUIContent("Weaved Assemblies");
         }
 
@@ -98,11 +101,11 @@ namespace Weaver.Editors
         {
             if (_hasModifiedProperties)
             {
-                string title = "Weaver Settings Pending Changes";
-                string message = "You currently have some pending changes that have not been applied and will be lost. Would you like to apply them now?";
-                string ok = "Apply Changes";
-                string cancel = "Discard Changes";
-                bool shouldApply = EditorUtility.DisplayDialog(title, message, ok, cancel);
+                var title = "Weaver Settings Pending Changes";
+                var message = "You currently have some pending changes that have not been applied and will be lost. Would you like to apply them now?";
+                var ok = "Apply Changes";
+                var cancel = "Discard Changes";
+                var shouldApply = EditorUtility.DisplayDialog(title, message, ok, cancel);
                 if (shouldApply)
                 {
                     ApplyModifiedProperties();
@@ -176,19 +179,19 @@ namespace Weaver.Editors
         {
             m_LogScrollPosition = EditorGUILayout.BeginScrollView(m_LogScrollPosition, EditorStyles.textArea);
             {
-                for (int i = 0; i < m_Log.entries.Count; i++)
+                for (var i = 0; i < m_Log.entries.Count; i++)
                 {
-                    Log.Entry entry = m_Log.entries[i];
+                    var entry = m_Log.entries[i];
                     if (m_Styles == null)
                     {
                         m_Styles = new Styles();
                     }
 
-                    Rect position = GUILayoutUtility.GetRect(m_Styles.Content(entry.message), m_Styles.zebraStyle);
+                    var position = GUILayoutUtility.GetRect(m_Styles.Content(entry.message), m_Styles.zebraStyle);
                     // Input
-                    int controlID = GUIUtility.GetControlID(321324, FocusType.Keyboard, position);
-                    Event current = Event.current;
-                    EventType eventType = current.GetTypeForControl(controlID);
+                    var controlID = GUIUtility.GetControlID(321324, FocusType.Keyboard, position);
+                    var current = Event.current;
+                    var eventType = current.GetTypeForControl(controlID);
                     if (eventType == EventType.MouseDown && position.Contains(current.mousePosition))
                     {
                         if (current.clickCount == 2)
@@ -218,13 +221,12 @@ namespace Weaver.Editors
                         }
                     }
 
-
                     if (eventType == EventType.Repaint)
                     {
-                        bool isHover = entry.id % 2 == 0;
-                        bool isActive = false;
-                        bool isOn = true;
-                        bool hasKeyboardFocus = m_SelectedLogIndex == i;
+                        var isHover = entry.id % 2 == 0;
+                        var isActive = false;
+                        var isOn = true;
+                        var hasKeyboardFocus = m_SelectedLogIndex == i;
                         m_Styles.zebraStyle.Draw(position, m_Styles.Content(entry.message), isHover, isActive, isOn, hasKeyboardFocus);
                     }
                 }
@@ -239,25 +241,26 @@ namespace Weaver.Editors
         }
 
         #region -= Weaved Assemblies =-
+
         private void OnWeavedAssemblyDrawElement(Rect rect, int index, bool isActive, bool isFocused)
         {
-            SerializedProperty indexProperty = m_WeavedAssemblies.GetArrayElementAtIndex(index);
+            var indexProperty = m_WeavedAssemblies.GetArrayElementAtIndex(index);
             EditorGUI.PropertyField(rect, indexProperty);
         }
 
         private void OnWeavedAssemblyElementAdded(ReorderableList list)
         {
-            GenericMenu menu = new GenericMenu();
+            var menu = new GenericMenu();
 
-            IList<Assembly> cachedAssemblies = AssemblyUtility.GetUserCachedAssemblies();
+            var cachedAssemblies = AssemblyUtility.GetUserCachedAssemblies();
 
-            for (int x = 0; x < cachedAssemblies.Count; x++)
+            for (var x = 0; x < cachedAssemblies.Count; x++)
             {
-                bool foundMatch = false;
-                for (int y = 0; y < m_WeavedAssemblies.arraySize; y++)
+                var foundMatch = false;
+                for (var y = 0; y < m_WeavedAssemblies.arraySize; y++)
                 {
-                    SerializedProperty current = m_WeavedAssemblies.GetArrayElementAtIndex(y);
-                    SerializedProperty assetPath = current.FindPropertyRelative("m_RelativePath");
+                    var current = m_WeavedAssemblies.GetArrayElementAtIndex(y);
+                    var assetPath = current.FindPropertyRelative("m_RelativePath");
                     if (cachedAssemblies[x].Location.IndexOf(assetPath.stringValue, StringComparison.Ordinal) > 0)
                     {
                         foundMatch = true;
@@ -266,8 +269,8 @@ namespace Weaver.Editors
                 }
                 if (!foundMatch)
                 {
-                    GUIContent content = new GUIContent(cachedAssemblies[x].GetName().Name);
-                    string projectPath = FileUtility.SystemToProjectPath(cachedAssemblies[x].Location);
+                    var content = new GUIContent(cachedAssemblies[x].GetName().Name);
+                    var projectPath = FileUtility.SystemToProjectPath(cachedAssemblies[x].Location);
                     menu.AddItem(content, false, OnWeavedAssemblyAdded, projectPath);
                 }
             }
@@ -288,10 +291,11 @@ namespace Weaver.Editors
         private void OnWeavedAssemblyAdded(object path)
         {
             m_WeavedAssemblies.arraySize++;
-            SerializedProperty weaved = m_WeavedAssemblies.GetArrayElementAtIndex(m_WeavedAssemblies.arraySize - 1);
+            var weaved = m_WeavedAssemblies.GetArrayElementAtIndex(m_WeavedAssemblies.arraySize - 1);
             weaved.FindPropertyRelative("m_RelativePath").stringValue = (string)path;
             weaved.FindPropertyRelative("m_IsActive").boolValue = true;
         }
-        #endregion
+
+        #endregion -= Weaved Assemblies =-
     }
 }

@@ -10,12 +10,13 @@ using Type = System.Type;
 /// </summary>
 /// <typeparam name="T">The scriptable object type that you want to use as a sub object</typeparam
 [System.Serializable]
-public class SubObjectController<T> : IEnumerable<T>  where T : ScriptableObject
+public class SubObjectController<T> : IEnumerable<T> where T : ScriptableObject
 {
     [SerializeField]
     protected List<T> m_SubObjects = new List<T>();
+
     [SerializeField]
-    protected Object m_Owner; 
+    protected Object m_Owner;
 
     public SubObjectController()
     { }
@@ -29,16 +30,16 @@ public class SubObjectController<T> : IEnumerable<T>  where T : ScriptableObject
     }
 
     /// <summary>
-    /// Gets the number of sub objects we are controlling. 
+    /// Gets the number of sub objects we are controlling.
     /// </summary>
     public int count
     {
-        get { return m_SubObjects.Count;  }
+        get { return m_SubObjects.Count; }
     }
 
     /// <summary>
     /// Adds a new instance as a sub object to the owner and returns
-    /// that instance. 
+    /// that instance.
     /// </summary>
     public T Add()
     {
@@ -56,7 +57,7 @@ public class SubObjectController<T> : IEnumerable<T>  where T : ScriptableObject
     }
 
     /// <summary>
-    /// Sets the owner of this instance used for adding sub objects. 
+    /// Sets the owner of this instance used for adding sub objects.
     /// </summary>
     public void SetOwner(Object owner)
     {
@@ -66,14 +67,14 @@ public class SubObjectController<T> : IEnumerable<T>  where T : ScriptableObject
     /// <summary>
     /// Adds a new instance of the type sent in. If the type
     /// does not match or does not inherit from the base T
-    /// and exception will be thrown. 
+    /// and exception will be thrown.
     /// </summary>
     public T Add(Type type)
     {
-        if(typeof(T).IsAssignableFrom(type))
+        if (typeof(T).IsAssignableFrom(type))
         {
             // Create a new instance
-            T newInstance = (T)ScriptableObject.CreateInstance(type);
+            var newInstance = (T)ScriptableObject.CreateInstance(type);
             // Set Name
             newInstance.name = type.FullName;
             // Add to our array
@@ -101,7 +102,7 @@ public class SubObjectController<T> : IEnumerable<T>  where T : ScriptableObject
     /// </summary>
     public bool HasInstanceOfType(Type type)
     {
-        for (int i = 0; i < m_SubObjects.Count; i++)
+        for (var i = 0; i < m_SubObjects.Count; i++)
         {
             if (!type.IsInstanceOfType(m_SubObjects[i]))
             {
@@ -119,9 +120,9 @@ public class SubObjectController<T> : IEnumerable<T>  where T : ScriptableObject
     /// <returns>True if an element was removed and false if not.</returns>
     public bool Remove(int index)
     {
-        if(index < 0 || index >= m_SubObjects.Count)
+        if (index < 0 || index >= m_SubObjects.Count)
         {
-            return false; 
+            return false;
         }
         else
         {
@@ -131,40 +132,40 @@ public class SubObjectController<T> : IEnumerable<T>  where T : ScriptableObject
 
     /// <summary>
     /// Removes the element from our list of sub objects and removes it from our
-    /// owner. 
+    /// owner.
     /// </summary>
     /// <param name="element">The element you want to remove</param>
     /// <returns>True if an element was removed.</returns>
     public bool Remove(T element)
     {
-        bool elementRemoved = false;
-        for (int i = m_SubObjects.Count - 1; i >= 0; i--)
+        var elementRemoved = false;
+        for (var i = m_SubObjects.Count - 1; i >= 0; i--)
         {
-            if(m_SubObjects[i] == element)
+            if (m_SubObjects[i] == element)
             {
                 // Flag that we removed something
                 elementRemoved = true;
                 // Destroy the element
                 Object.DestroyImmediate(m_SubObjects[i], true);
                 // Remove the index
-                m_SubObjects.RemoveAt(i); 
+                m_SubObjects.RemoveAt(i);
             }
         }
-        return elementRemoved; 
+        return elementRemoved;
     }
 
     /// <summary>
-    /// Removes all our sub objects. 
+    /// Removes all our sub objects.
     /// </summary>
     public void RemoveAll()
     {
-        for (int i = m_SubObjects.Count - 1; i >= 0; i--)
+        for (var i = m_SubObjects.Count - 1; i >= 0; i--)
         {
             // Delete it
             Object.DestroyImmediate(m_SubObjects[i], true);
         }
         // Clear our array
-        m_SubObjects.Clear(); 
+        m_SubObjects.Clear();
     }
 
     /// <summary>
@@ -173,19 +174,19 @@ public class SubObjectController<T> : IEnumerable<T>  where T : ScriptableObject
     /// </summary>
     public IEnumerator<T> GetEnumerator()
     {
-        for(int i = 0; i < m_SubObjects.Count; i++)
+        for (var i = 0; i < m_SubObjects.Count; i++)
         {
             yield return m_SubObjects[i];
         }
     }
 
     /// <summary>
-    /// Gets the base for IEnumerable function. 
+    /// Gets the base for IEnumerable function.
     /// </summary>
     /// <returns></returns>
     IEnumerator IEnumerable.GetEnumerator()
     {
-        for (int i = 0; i < m_SubObjects.Count; i++)
+        for (var i = 0; i < m_SubObjects.Count; i++)
         {
             yield return m_SubObjects[i];
         }
