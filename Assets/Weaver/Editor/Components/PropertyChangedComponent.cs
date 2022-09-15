@@ -7,21 +7,9 @@ namespace Weaver
 {
     public class PropertyChangedComponent : WeaverComponent
     {
-        public override string ComponentName
-        {
-            get
-            {
-                return "Property Changed";
-            }
-        }
+        public override string ComponentName => "Property Changed";
 
-        public override DefinitionType EffectedDefintions
-        {
-            get
-            {
-                return DefinitionType.Module | DefinitionType.Property;
-            }
-        }
+        public override DefinitionType EffectedDefintions => DefinitionType.Module | DefinitionType.Property;
 
         public override void VisitModule(ModuleDefinition moduleDefinition)
         {

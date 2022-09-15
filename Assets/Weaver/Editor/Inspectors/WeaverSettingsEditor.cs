@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -93,6 +91,7 @@ namespace Weaver.Editors
             m_WeavedAssembliesList.onAddCallback += OnWeavedAssemblyElementAdded;
             m_WeavedAssembliesList.drawHeaderCallback += OnWeavedAssemblyHeader;
             m_WeavedAssembliesList.onRemoveCallback += OnWeavedAssemblyRemoved;
+
             // Labels
             m_WeavedAssemblyHeaderLabel = new GUIContent("Weaved Assemblies");
         }
@@ -155,7 +154,13 @@ namespace Weaver.Editors
             {
                 _hasModifiedProperties = true;
             }
+            GUILayout.BeginHorizontal();
             GUILayout.Label("Log", EditorStyles.boldLabel);
+            if (GUILayout.Button("Clear log", GUILayout.Width(80)))
+            {
+                serializedObject.FindField<Log>("m_Log").value.entries.Clear();
+            }
+            GUILayout.EndHorizontal();
             DrawLogs();
 
             if (_hasModifiedProperties)

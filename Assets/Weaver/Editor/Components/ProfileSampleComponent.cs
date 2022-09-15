@@ -20,21 +20,9 @@ namespace Weaver
         private MethodReference m_EndSampleMethodRef;
         private MethodReference m_GetGameObjectMethodRef;
 
-        public override string ComponentName
-        {
-            get
-            {
-                return "Profile Sample";
-            }
-        }
+        public override string ComponentName => "Profile Sample";
 
-        public override DefinitionType EffectedDefintions
-        {
-            get
-            {
-                return DefinitionType.Module | DefinitionType.Method;
-            }
-        }
+        public override DefinitionType EffectedDefintions => DefinitionType.Module | DefinitionType.Method;
 
         public override void VisitModule(ModuleDefinition moduleDefinition)
         {

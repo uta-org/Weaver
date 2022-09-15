@@ -28,15 +28,12 @@ namespace Weaver
         [UsedImplicitly]
         private List<Entry> m_Entries = new List<Entry>();
 
-        public List<Entry> entries
-        {
-            get { return m_Entries; }
-        }
+        public List<Entry> entries => m_Entries;
 
         public ILogable context
         {
-            get { return m_Context; }
-            set { m_Context = value; }
+            get => m_Context;
+            set => m_Context = value;
         }
 
         /// <summary>

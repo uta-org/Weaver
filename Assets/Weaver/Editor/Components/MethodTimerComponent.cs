@@ -29,21 +29,9 @@ namespace Weaver
         private MethodReference m_DebugLogMethodRef;
         private TypeReference m_StopwatchTypeReference;
 
-        public override string ComponentName
-        {
-            get
-            {
-                return "Method Timer";
-            }
-        }
+        public override string ComponentName => "Method Timer";
 
-        public override DefinitionType EffectedDefintions
-        {
-            get
-            {
-                return DefinitionType.Module | DefinitionType.Method;
-            }
-        }
+        public override DefinitionType EffectedDefintions => DefinitionType.Module | DefinitionType.Method;
 
         public override void VisitModule(ModuleDefinition moduleDefinition)
         {

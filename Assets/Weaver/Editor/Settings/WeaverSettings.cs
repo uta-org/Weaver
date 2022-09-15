@@ -40,20 +40,11 @@ namespace Weaver
         [SerializeField]
         private Stopwatch m_Timer;
 
-        public ComponentController componentController
-        {
-            get { return m_Components; }
-        }
+        public ComponentController componentController => m_Components;
 
-        Object ILogable.context
-        {
-            get { return this; }
-        }
+        Object ILogable.context => this;
 
-        string ILogable.label
-        {
-            get { return "WeaverSettings"; }
-        }
+        string ILogable.label => "WeaverSettings";
 
         [UsedImplicitly]
         [InitializeOnLoadMethod]
@@ -147,7 +138,7 @@ namespace Weaver
             AssemblyUtility.PopulateAssemblyCache();
 
 #if UNITY_2019_1_OR_NEWER
-            CompilationPipeline.assemblyCompilationFinished += ComplicationComplete;
+            CompilationPipeline.assemblyCompilationFinished += CompilationComplete;
 #elif UNITY_2017_1_OR_NEWER
             AssemblyReloadEvents.beforeAssemblyReload += WeaveModifiedAssemblies;
 #else
@@ -158,9 +149,9 @@ namespace Weaver
 #if UNITY_2019_1_OR_NEWER
 
         /// <summary>
-        /// Invoked whenever one of our assemblies has compelted compliling.
+        /// Invoked whenever one of our assemblies has completed compiling.
         /// </summary>
-        private void ComplicationComplete(string assemblyPath, CompilerMessage[] compilerMessages)
+        private void CompilationComplete(string assemblyPath, CompilerMessage[] compilerMessages)
         {
             WeaveAssembly(assemblyPath);
         }

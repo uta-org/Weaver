@@ -12,7 +12,7 @@ public class ReflectedField<T>
 
     public T value
     {
-        get { return m_Value; }
+        get => m_Value;
         set
         {
             if (!value.Equals(m_Value))

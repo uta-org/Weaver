@@ -23,6 +23,7 @@ namespace Weaver
         // Hidden for now
         [SerializeField, HideInInspector]
         private bool m_IsActive = true;
+
         [SerializeField, HideInInspector]
         private ScriptingSymbols m_RequiredScriptingSymbols;
 
@@ -30,50 +31,29 @@ namespace Weaver
         public abstract string ComponentName { get; }
         private Log m_Log;
 
-        public bool isActive
-        {
-            get { return m_IsActive && m_RequiredScriptingSymbols.isActive; }
-        }
+        public bool isActive => m_IsActive && m_RequiredScriptingSymbols.isActive;
 
         /// <summary>
         /// Returns back the type system for the module
         /// currently being edited. If we are not editing a module this
         /// returns null.
         /// </summary>
-        public TypeSystem typeSystem
-        {
-            get { return m_ActiveModule == null ? null : m_ActiveModule.TypeSystem; }
-        }
+        public TypeSystem typeSystem => m_ActiveModule == null ? null : m_ActiveModule.TypeSystem;
 
         /// <summary>
-        /// Returns back the type of definitions this component modifies. 
+        /// Returns back the type of definitions this component modifies.
         /// </summary>
-        public virtual DefinitionType EffectedDefintions
-        {
-            get
-            {
-                return DefinitionType.None;
-            }
-        }
+        public virtual DefinitionType EffectedDefintions => DefinitionType.None;
 
         /// <summary>
-        /// The context object for our logging. 
+        /// The context object for our logging.
         /// </summary>
-        public Object context
-        {
-            get
-            {
-                return this;
-            }
-        }
+        public Object context => this;
 
         /// <summary>
         /// Returns back the label we use for our logs.
         /// </summary>
-        public string label
-        {
-            get { return GetType().Name; }
-        }
+        public string label => GetType().Name;
 
         private void OnEnable()
         {
@@ -82,7 +62,7 @@ namespace Weaver
 
         /// <summary>
         /// Returns true if this addin effects the definition
-        /// of a type. 
+        /// of a type.
         /// </summary>
         public bool EffectsDefintion(DefinitionType type)
         {
@@ -91,7 +71,7 @@ namespace Weaver
 
         /// <summary>
         /// Invoked whenever we start editing a module. Used to populate our
-        /// helper functions 
+        /// helper functions
         /// </summary>
         public virtual void OnBeforeModuleEdited(ModuleDefinition moduleDefinition, Log log)
         {
@@ -116,15 +96,25 @@ namespace Weaver
             Log("Module visitation complete");
         }
 
-        public virtual void VisitModule(ModuleDefinition moduleDefinition) { }
-        public virtual void VisitType(TypeDefinition typeDefinition) { }
-        public virtual void VisitMethod(MethodDefinition methodDefinition) { }
-        public virtual void VisitField(FieldDefinition fieldDefinition) { }
-        public virtual void VisitProperty(PropertyDefinition propertyDefinition) { }
+        public virtual void VisitModule(ModuleDefinition moduleDefinition)
+        { }
+
+        public virtual void VisitType(TypeDefinition typeDefinition)
+        { }
+
+        public virtual void VisitMethod(MethodDefinition methodDefinition)
+        { }
+
+        public virtual void VisitField(FieldDefinition fieldDefinition)
+        { }
+
+        public virtual void VisitProperty(PropertyDefinition propertyDefinition)
+        { }
 
         #region -= Logging =-
+
         /// <summary>
-        /// Logs a message to the console 
+        /// Logs a message to the console
         /// </summary>
         protected void Log(string message)
         {
@@ -170,9 +160,11 @@ namespace Weaver
         {
             m_Log.Error(ComponentName, memberContext + message, false, 3);
         }
-        #endregion
+
+        #endregion -= Logging =-
 
         #region -= Import Methods =-
+
         public TypeReference Import(TypeReference type)
         {
             if (m_ActiveModule == null)
@@ -280,6 +272,7 @@ namespace Weaver
             }
             return m_ActiveModule.ImportReference(field, context);
         }
-        #endregion
+
+        #endregion -= Import Methods =-
     }
 }

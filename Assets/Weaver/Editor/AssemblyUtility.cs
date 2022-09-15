@@ -102,10 +102,11 @@ namespace Weaver
         /// <returns></returns>
         public static IList<string> GetUserAssemblyPaths()
         {
-            var assemblies = new List<string>(20);
+            var assemblies = new HashSet<string>(20);
             FindAssemblies(Application.dataPath, 120, assemblies);
             FindAssemblies(Application.dataPath + "/../Library/ScriptAssemblies/", 2, assemblies);
-            return assemblies;
+            AppDomain.CurrentDomain.GetAssemblies().Select(a => a.Location).Where(IsManagedAssembly).ToList().ForEach(i => assemblies.Add(i));
+            return assemblies.ToList();
         }
 
         /// <summary>
@@ -114,9 +115,9 @@ namespace Weaver
         /// </summary>
         public static IList<string> GetUnityUserGeneratedAssemblyPaths()
         {
-            var assemblies = new List<string>(20);
+            var assemblies = new HashSet<string>(20);
             FindAssemblies(Application.dataPath + "/../Library/ScriptAssemblies/", 2, assemblies);
-            return assemblies;
+            return assemblies.ToList();
         }
 
         /// <summary>
@@ -142,7 +143,7 @@ namespace Weaver
         /// <param name="systemPath">The path of the directory you want to start looking in.</param>
         /// <param name="maxDepth">The max number of sub directories you want to go into.</param>
         /// <returns></returns>
-        public static void FindAssemblies(string systemPath, int maxDepth, List<string> result)
+        public static void FindAssemblies(string systemPath, int maxDepth, HashSet<string> result)
         {
             if (maxDepth > 0)
             {
@@ -152,9 +153,13 @@ namespace Weaver
                     {
                         var directroyInfo = new DirectoryInfo(systemPath);
                         // Find all assemblies that are managed
-                        result.AddRange(from file in directroyInfo.GetFiles()
-                                        where IsManagedAssembly(file.FullName)
-                                        select file.FullName);
+
+                        var r = from file in directroyInfo.GetFiles()
+                                where IsManagedAssembly(file.FullName)
+                                select file.FullName;
+
+                        foreach (var rr in r)
+                            result.Add(rr);
                         var directories = directroyInfo.GetDirectories();
                         for (var i = 0; i < directories.Length; i++)
                         {

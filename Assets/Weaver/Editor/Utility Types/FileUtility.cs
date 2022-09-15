@@ -22,10 +22,7 @@ namespace Weaver
         /// <summary>
         /// Gets the folder at the root of the project below 'Assets'
         /// </summary>
-        public static string projectPath
-        {
-            get { return m_ProjectPath; }
-        }
+        public static string projectPath => m_ProjectPath;
 
         /// <summary>
         /// Converts a full System Path to a Unity project relative path.

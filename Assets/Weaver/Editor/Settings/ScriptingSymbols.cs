@@ -16,10 +16,7 @@ namespace Weaver
         /// <summary>
         /// Returns back true if the symbols are defined.
         /// </summary>
-        public bool isActive
-        {
-            get { return m_IsActive; }
-        }
+        public bool isActive => m_IsActive;
 
         public void ValidateSymbols()
         {

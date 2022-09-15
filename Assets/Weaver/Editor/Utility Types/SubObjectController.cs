@@ -24,18 +24,12 @@ public class SubObjectController<T> : IEnumerable<T> where T : ScriptableObject
     /// <summary>
     /// Gets the sub object at the index sent in.
     /// </summary>
-    public T this[int index]
-    {
-        get { return m_SubObjects[index]; }
-    }
+    public T this[int index] => m_SubObjects[index];
 
     /// <summary>
     /// Gets the number of sub objects we are controlling.
     /// </summary>
-    public int count
-    {
-        get { return m_SubObjects.Count; }
-    }
+    public int count => m_SubObjects.Count;
 
     /// <summary>
     /// Adds a new instance as a sub object to the owner and returns
