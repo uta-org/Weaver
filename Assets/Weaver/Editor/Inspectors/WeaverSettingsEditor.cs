@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEditor;
+using UnityEditor.Compilation;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -156,6 +157,11 @@ namespace Weaver.Editors
             }
             GUILayout.BeginHorizontal();
             GUILayout.Label("Log", EditorStyles.boldLabel);
+            if (GUILayout.Button("Reload", GUILayout.Width(80)))
+            {
+                EditorUtility.RequestScriptReload();
+                CompilationPipeline.RequestScriptCompilation();
+            }
             if (GUILayout.Button("Clear log", GUILayout.Width(80)))
             {
                 serializedObject.FindField<Log>("m_Log").value.entries.Clear();
