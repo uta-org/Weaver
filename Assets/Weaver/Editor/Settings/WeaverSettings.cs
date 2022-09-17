@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Mono.Cecil;
 using Mono.Cecil.Pdb;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -45,6 +46,8 @@ namespace Weaver
         Object ILogable.context => this;
 
         string ILogable.label => "WeaverSettings";
+
+        public static event Action OnFinishedWeaving = delegate { };
 
         [UsedImplicitly]
         [InitializeOnLoadMethod]
@@ -243,6 +246,8 @@ namespace Weaver
                     m_Components.Initialize(this);
 
                     m_Components.VisitModule(moduleDefinition, m_Log);
+
+                    OnFinishedWeaving();
 
                     // Save
                     var writerParameters = new WriterParameters()
