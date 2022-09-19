@@ -47,7 +47,7 @@ namespace Weaver
 
         string ILogable.label => "WeaverSettings";
 
-        public static event Action<ModuleDefinition> OnFinishedWeaving = delegate { };
+        public static event Action OnFinishedWeaving = delegate { };
 
         [UsedImplicitly]
         [InitializeOnLoadMethod]
@@ -247,7 +247,7 @@ namespace Weaver
 
                     m_Components.VisitModule(moduleDefinition, m_Log);
 
-                    OnFinishedWeaving(moduleDefinition);
+                    OnFinishedWeaving();
 
                     // Save
                     var writerParameters = new WriterParameters()
